@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title></title>
+	<script src="script.js"></script>
 </head>
 <body>
 
@@ -45,19 +46,23 @@ include './19-09-30_projecte_1_social_gallery_m07_db_connection.php';
 
 	<div>
 		<h1>UPDATE A PHOTOGRAPH</h1>
-		<form action="19-09-30_projecte_1_social_gallery_m07_upload.php" method="POST" enctype="multipart/form-data">
+		<form action="19-09-30_projecte_1_social_gallery_m07_upload.php" method="POST" enctype="multipart/form-data" onsubmit="second()">
 			<p>Archivo: </p><br>
-			<input type="file" name="i_file" accept="image/png, image/jpg, image/jpeg, image/gif" required><br>
+			<input type="file" name="i_file" accept="image/png, image/jpg, image/jpeg, image/gif" required id="archivo"><br>
 			<p>Nombre de la foto: </p><br>
-  			<input type="text" name="i_photo_name" required><br><br>
+  			<input type="text" name="i_photo_name" required id="titulo"><br><br>
   			<input type="submit" name="submit"><br>
 		</form>
 	</div><br>
 
 
 <?php
+session_start();
+$iduser = $_SESSION['id_usuario'];
+$qry = "SELECT photo_name, photo_path, photo_date FROM t_gallery WHERE id_usuario_photo = '$iduser'";
+$result = mysqli_query($conn,$qry);
 
-$result = mysqli_query($conn, "SELECT photo_name, photo_path, photo_date FROM t_gallery");
+
 
 if (!empty($result) && mysqli_num_rows($result)>0) {
 
