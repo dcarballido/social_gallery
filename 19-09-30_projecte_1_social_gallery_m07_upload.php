@@ -9,16 +9,14 @@
 //creacion de la conexion con db
 	$conn = new mysqli($server, $user, $password, $dbname) or die($conn -> connect_error);
 
-// matengo session iniciada
+
+//inicia parametros de $_SESSION
+
+	session_start();
+
+	$req_iduser = $_SESSION['id_usuario'];
 
 
-		//Mantengo la sesión. Por ende puedo utilizar la variable $_SESSION anteriormente configurada
-		session_start();
-		if(isset($_SESSION['nombre'])){
-			echo "<a href='./logout.proc.php'>Cerrar sesión de ".$_SESSION['nombre']."</a>&nbsp;&nbsp;";
-		}else{
-			header("Location: ./index.php");
-		}
 		
 //muestra el nombre del archivo
 
@@ -37,6 +35,7 @@ $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
 $date = date('Y-m-d');
+
 
 
 
@@ -123,14 +122,14 @@ if(isset($_POST["submit"])) {
     $req_name = $_REQUEST['i_photo_name'];
     $req_size = $_FILES["i_file"]["size"];
     $req_type = $check["mime"];
+
 	$query = "INSERT INTO t_gallery (id_usuario_photo, photo_name, photo_path, photo_date, photo_size, photo_type
-) VALUES (' $_SESSION['id_usuario'] ', ' $req_name  ', ' $target_file ', '$date ', '$req_size', '$req_type')";
+) VALUES (' $req_iduser ', ' $req_name  ', ' $target_file ', '$date ', '$req_size', '$req_type')";
 
 
     // crea la INSERT query
 
-    if ($uploadOk == 1 && mysqli_query($conn, $query)
-) {
+    if ($uploadOk == 1 && mysqli_query($conn, $query)) {
 
     	
     	echo $query . "<br>";
@@ -141,9 +140,10 @@ if(isset($_POST["submit"])) {
     	}else {
 
     		echo "<strong>No se ha podido insertar en la base de datos.</strong><br>";
-    		echo mysqli_error();
+    		echo $query;
 
     	}
+
 
 
 
@@ -157,7 +157,6 @@ if(isset($_POST["submit"])) {
 <html>
 <head>
 	<title></title>
-	<script src="script.js"></script>
 </head>
 <body>
 	<button onclick="location.href='19-09-30_projecte_1_social_gallery_m07_index.php'">Volver a la página principal</button>

@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title></title>
-	<script src="script.js"></script>
+	<script src="19-10-21_projecte_1_social_gallery_m07_script.js"></script>
 </head>
 <body>
 
@@ -23,12 +23,6 @@ include './19-09-30_projecte_1_social_gallery_m07_db_connection.php';
 		// 	}
 
 		// 	;
-
-
-
-
-
-
 ?>
 <!-- boton de cerrar sesion de usuario -->
 <div style="text-align: right;">
@@ -36,27 +30,29 @@ include './19-09-30_projecte_1_social_gallery_m07_db_connection.php';
 		//Mantengo la sesión. Por ende puedo utilizar la variable $_SESSION anteriormente configurada
 		session_start();
 		if(isset($_SESSION['nombre'])){
-			echo "<a href='./logout.proc.php'>Cerrar sesión de ".$_SESSION['nombre']."</a>&nbsp;&nbsp;";
+			echo "<a href='./19-10-21_projecte_1_social_gallery_m07_logout.proc.php'>Cerrar sesión de ".$_SESSION['nombre']."</a>&nbsp;&nbsp;";
 		}else{
-			header("Location: ./index.php");
+			header("Location: ./19-10-21_projecte_1_social_gallery_m07_login.php");
 		}
 		?>
 	</div> 
-<!-- formulario de recogida de fichero/datos -->
 
+<!-- formulario de recogida de fichero/datos -->
 	<div>
 		<h1>UPDATE A PHOTOGRAPH</h1>
-		<form action="19-09-30_projecte_1_social_gallery_m07_upload.php" method="POST" enctype="multipart/form-data" onsubmit="second()">
+		<form action="19-09-30_projecte_1_social_gallery_m07_upload.php" method="POST" enctype="multipart/form-data" onsubmit="return second()">
 			<p>Archivo: </p><br>
-			<input type="file" name="i_file" accept="image/png, image/jpg, image/jpeg, image/gif" required id="archivo"><br>
+			<input type="file" name="i_file" accept="image/png, image/jpg, image/jpeg, image/gif"  id="archivo"><br>
 			<p>Nombre de la foto: </p><br>
-  			<input type="text" name="i_photo_name" required id="titulo"><br><br>
+  			<input type="text" name="i_photo_name" id="titulo"><br><br>
   			<input type="submit" name="submit"><br>
 		</form>
 	</div><br>
 
 
+<!-- muestra las fotos segun el id del usuario en la db -->
 <?php
+
 session_start();
 $iduser = $_SESSION['id_usuario'];
 $qry = "SELECT photo_name, photo_path, photo_date FROM t_gallery WHERE id_usuario_photo = '$iduser'";
@@ -64,6 +60,7 @@ $result = mysqli_query($conn,$qry);
 
 
 
+// muestra la imagen con la informacion seleccionada
 if (!empty($result) && mysqli_num_rows($result)>0) {
 
 	while ($row = mysqli_fetch_array($result)) {
@@ -74,10 +71,6 @@ if (!empty($result) && mysqli_num_rows($result)>0) {
 			echo "<h2>Fecha de inserción de la foto: " . $row['photo_date'] . "</h2>";
 			echo "</div>";
 		}	
-
-}else{
-
-
 
 }
 
